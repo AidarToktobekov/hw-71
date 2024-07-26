@@ -5,7 +5,7 @@ const Toolbar: React.FC = () => {
   return (
     <nav className="navbar navbar-dark bg-dark">
       <div className="container">
-        <NavLink to="/" className="navbar-brand">
+        <NavLink to="/admin" className="navbar-brand">
           Turtle Pizza Admin
         </NavLink>
         <ul className="navbar-nav d-flex flex-row gap-3 flex-nowrap">

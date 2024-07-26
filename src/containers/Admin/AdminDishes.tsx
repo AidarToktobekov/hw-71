@@ -14,7 +14,6 @@ const AdminDishes = ()=>{
 
     useEffect(()=>{
         dispatch(fetchDishes())
-        console.log(dishes);
     }, [])
 
 
@@ -29,7 +28,7 @@ const AdminDishes = ()=>{
                     {dishesLoading ? ( <Spinner />) : 
                         (dishes.map((dish, index)=>{
                             return(
-                                <Dish key={index} title={dish.title} price={dish.price} image={dish.image}></Dish>
+                                <Dish id={dish.id} key={index} title={dish.title} price={dish.price} image={dish.image}></Dish>
                             )
                     }))}
                 </div>

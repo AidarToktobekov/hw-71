@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch } from '../app/store';
 import axiosApi from '../axiosApi';
-import { ApiDishes, Dish } from '../types';
+import { ApiDish, ApiDishes, ApiOrders, Dish } from '../types';
 
 export const fetchDishes = createAsyncThunk<
   Dish[],
@@ -22,49 +22,53 @@ export const fetchDishes = createAsyncThunk<
       };
     });
   }
-
-  console.log(newDishes);
-  
   return newDishes;
 });
 
-// export const deleteDish = createAsyncThunk<void, string>(
-//   'dishes/deleteDish',
-//   async (dishId) => {
-//     await axiosApi.delete('/dishes/' + dishId + '.json');
-//   },
-// );
+export const deleteDishes = createAsyncThunk<void, string>(
+  'dishes/deleteDish',
+  async (dishId) => {
+    await axiosApi.delete('/dishes/' + dishId + '.json');
+  },
+);
 
-// export const createDish = createAsyncThunk<void, ApiDish>(
-//   'dishes/create',
-//   async (apiDish) => {
-//     await axiosApi.post('/dishes.jso', apiDish);
-//   },
-// );
+export const createDish = createAsyncThunk<void, ApiDish>(
+  'dishes/create',
+  async (apiDish) => {
+    await axiosApi.post('/dishes.json', apiDish);
+  },
+);
 
-// export const fetchOneDish = createAsyncThunk<ApiDish, string>(
-//   'dishes/fetchOne',
-//   async (id) => {
-//     const { data: dish } = await axiosApi.get<ApiDish | null>(
-//       `/dishes/${id}.json`,
-//     );
+export const createOrder = createAsyncThunk<void, ApiOrders>(
+  'orders/create',
+  async (apiOrders) => {
+    await axiosApi.post('/orders.json', apiOrders);
+  },
+);
 
-//     if (dish === null) {
-//       throw new Error('Not found');
-//     }
+export const fetchOneDish = createAsyncThunk<ApiDish, string>(
+  'dishes/fetchOne',
+  async (id) => {
+    const { data: dish } = await axiosApi.get<ApiDish | null>(
+      `/dishes/${id}.json`,
+    );
 
-//     return dish;
-//   },
-// );
+    if (dish === null) {
+      throw new Error('Not found');
+    }
 
-// export interface UpdateDishArg {
-//   id: string;
-//   apiDish: ApiDish;
-// }
+    return dish;
+  },
+);
 
-// export const updateDish = createAsyncThunk<void, UpdateDishArg>(
-//   'dishes/update',
-//   async ({ id, apiDish }) => {
-//     await axiosApi.put(`/dishes/${id}.json`, apiDish);
-//   },
-// );
+export interface UpdateDishArg {
+  id: string;
+  apiDish: ApiDish;
+}
+
+export const updateDish = createAsyncThunk<void, UpdateDishArg>(
+  'dishes/update',
+  async ({ id, apiDish }) => {
+    await axiosApi.put(`/dishes/${id}.json`, apiDish);
+  },
+);
