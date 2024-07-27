@@ -15,6 +15,15 @@ export interface ApiOrders {
     [id: string]: number;
 }
 
+export interface DishFromOrder{
+    amount: number;
+    dish: ApiDish;
+}
+
+export interface DishesFromOrders{
+    [id: string]: DishFromOrder;
+}
+
 export interface Orders {
     id: string;
     amount: number;

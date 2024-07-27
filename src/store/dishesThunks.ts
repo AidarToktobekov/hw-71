@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch } from '../app/store';
 import axiosApi from '../axiosApi';
-import { ApiDish, ApiDishes, ApiOrders, Dish } from '../types';
+import { ApiDish, ApiDishes, ApiOrders, Dish, DishesFromOrders, DishFromOrder } from '../types';
 
 export const fetchDishes = createAsyncThunk<
   Dish[],
@@ -58,6 +58,52 @@ export const fetchOneDish = createAsyncThunk<ApiDish, string>(
     }
 
     return dish;
+  },
+);
+
+export const fetchOrders = createAsyncThunk<
+  ApiOrders[],
+  undefined,
+  { dispatch: AppDispatch }
+>('orders/fetchOrders', async () => {
+  const ordersResponse = await axiosApi.get<ApiOrders | null>('/orders.json');
+  const orders = ordersResponse.data;
+
+  let newOrders: ApiOrders[] = [];
+
+  if (orders) {
+    newOrders = Object.keys(orders).map((key: string) => {
+      const order:ApiOrders = orders[key];
+      return {
+        ...order,
+      };
+      
+    });
+  }
+  return newOrders;
+});
+
+export const fetchOneOrder = createAsyncThunk<DishesFromOrders,ApiOrders>(
+  'order/fetchOne',
+  (order) => {
+    const oneOrder:DishesFromOrders = {};
+    Object.keys(order).map(async(key)=>{
+      const { data: dish } = await axiosApi.get<ApiDish | null>(`/dishes/${key}.json`,);
+      if (dish === null) {
+        throw new Error('Not found');
+      }
+      const newOrder:DishFromOrder = {
+        amount: order[key],
+        dish: dish,
+      }
+      
+      oneOrder[key] = newOrder;
+    })
+    
+    console.log(oneOrder);
+
+    
+    // return oneOrder; 
   },
 );
 
